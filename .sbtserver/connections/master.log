@@ -1,0 +1,7 @@
+New log file opened at Tue Nov 15 00:19:46 CET 2016 by 29236@olden-EP45C-DS3R
+Taking next connection to: 34741
+New client attempting to connect on port: 32920-34741
+  Address = /127.0.1.1:34741
+This client on port 32920 has uuid 079d238f-b3e3-4c2a-abb4-6ecabe85bc6b configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-079d238f-b3e3-4c2a-abb4-6ecabe85bc6b
+Taking next connection to: 34741
