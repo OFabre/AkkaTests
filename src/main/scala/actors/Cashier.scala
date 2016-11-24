@@ -1,9 +1,7 @@
 package actors
 
-import akka.actor.{Actor, ActorSystem}
+import akka.actor.Actor
 import messages.{GoodBye, Hello, HowManyCustomers, ThisManyCustomers}
-
-import scala.util.Random
 
 /**
   * Created by olden on 15/11/16.
