@@ -1,11 +1,16 @@
 package actors
 
-import akka.actor.Actor
-import akka.actor.Actor.Receive
+import akka.actor.{Actor, ActorRef}
+import com.sun.org.apache.bcel.internal.generic.GOTO
+import messages.{GoToThisCashier, Hello}
 
 /**
   * Created by olden on 15/11/16.
   */
-class Customer extends Actor {
-  override def receive: Receive = ???
+class Customer(market: ActorRef) extends Actor {
+  market ! Hello
+
+  override def receive: Receive = {
+    case(GoToThisCashier(cashierRef)) => cashierRef ! Hello
+  }
 }
