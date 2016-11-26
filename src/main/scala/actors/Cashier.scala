@@ -3,13 +3,15 @@ package actors
 import akka.actor.Actor
 import messages.{GoodBye, Hello, HowManyCustomers, ThisManyCustomers}
 
+import scala.util.Random
+
 /**
   * Created by olden on 15/11/16.
   */
 class Cashier extends Actor {
   var nbCustomer = 0
 
-  def doSomething() = Thread.sleep(1000)
+  def doSomething() = Thread.sleep(Random.nextInt(10000))
 
   override def receive: Receive = {
     case (Hello) =>
