@@ -11,13 +11,13 @@ import scala.util.Random
 class Cashier extends Actor {
   var nbCustomer = 0
 
-  def doSomething(): Unit = Thread.sleep(Random.nextInt(10000))
+  private def doSomething: Unit = Thread.sleep(Random.nextInt(10000))
 
   override def receive: Receive = {
     case (Hello) =>
       nbCustomer += 1
       println(s"I am busy with a client and now have $nbCustomer customers")
-      doSomething()
+      doSomething
       sender ! GoodBye
       nbCustomer -= 1
       println(s"Done with $sender, I now have $nbCustomer customers")
