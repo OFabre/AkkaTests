@@ -8,7 +8,8 @@ object HelloAkkaScala extends App {
 
   val market = system.actorOf(Props[Market], "market")
 
-  val custo = system.actorOf(Props(new Customer(market)))
+  system.actorOf(Props(new Customer(market)))
+  system.actorOf(Props(new Customer(market)))
 
   /*
 

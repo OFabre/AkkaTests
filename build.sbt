@@ -14,4 +14,7 @@ libraryDependencies ++= Seq(
   "com.novocode" % "junit-interface" % "0.11" % "test"
 )
 
+// https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
+libraryDependencies += "org.slf4j" % "slf4j-log4j12" % "1.2"
+
 fork in run := true
