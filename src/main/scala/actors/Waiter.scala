@@ -14,27 +14,10 @@ import scala.collection.mutable
   */
 class Waiter extends Actor {
   val logger = Logging.getLogger(ActorSystem("helloakka"), "Waiter")
-  val q = new mutable.Queue[(ActorRef, ActorRef, Long)]
-
-  new Thread(new Runnable {
-    override def run(): Unit = {
-      while (true) {
-        logger.debug("Looking queue...")
-        if (q.isEmpty) {
-          logger.debug("Nothing")
-          Thread.sleep(1000)
-        }
-        else {
-          logger.debug("New item")
-          val (sender, a, t) = q.dequeue()
-          Thread.sleep(t)
-          sender ! Done(a)
-        }
-      }
-    }
-  }).start()
 
   override def receive: Receive = {
-    case (TimingOut(waitingActor, ms)) => q.enqueue((sender, waitingActor, ms))
+    case (TimingOut(waitingActor, ms)) =>
+      Thread.sleep(ms)
+      sender ! Done(waitingActor)
   }
 }

@@ -8,8 +8,9 @@ object HelloAkkaScala extends App {
 
   val market = system.actorOf(Props[Market], "market")
 
-  system.actorOf(Props(new Customer(market))) // Adds a customer to the market
-  system.actorOf(Props(new Customer(market)))
+  (1 to 100).foreach({ i =>
+    system.actorOf(Props(new Customer(market))) // Adds a customer to the market
+  })
 
   /*
 

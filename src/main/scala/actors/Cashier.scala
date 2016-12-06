@@ -32,6 +32,7 @@ class Cashier extends Actor {
       nbCustomer -= 1
       logger.info(s"Done with $sender, I now have $nbCustomer customers")
     case (HowManyCustomers) =>
-      ThisManyCustomers(nbCustomer)
+      logger.info(s"I have $nbCustomer customers. This is my answer.")
+      sender ! ThisManyCustomers(nbCustomer)
   }
 }

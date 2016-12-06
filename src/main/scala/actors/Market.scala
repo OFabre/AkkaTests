@@ -1,12 +1,15 @@
 package actors
 
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
+import akka.event.Logging
 import messages._
 
 /**
   * Created by olden on 15/11/16.
   */
 case class Market() extends Actor {
+  val logger = Logging.getLogger(ActorSystem("helloakka"), "Market")
+
   val cashiers: scala.collection.mutable.Map[ActorRef, Int] = scala.collection.mutable.Map[ActorRef, Int](
     ActorSystem("helloakka").actorOf(Props[Cashier]) -> 0,
     ActorSystem("helloakka").actorOf(Props[Cashier]) -> 0,
@@ -20,13 +23,14 @@ case class Market() extends Actor {
 
   override def receive: Receive = {
     case (Hello) =>
-      println(s"Hello $sender")
-      sender ! GoToThisCashier(whichOne)
-      println(s"$sender, go there : $whichOne")
-      whichOne ! HowManyCustomers
+      logger.info(s"Hello $sender")
+      val choice = whichOne
+      sender ! GoToThisCashier(choice)
+      logger.info(s"$sender, go there : $choice")
+      choice ! HowManyCustomers
     case (ThisManyCustomers(n)) =>
       cashiers -= sender
-      println(s"ok, $sender, you have $n customers")
+      logger.info(s"ok, $sender, you have $n customers")
       cashiers += sender -> n
   }
 }
