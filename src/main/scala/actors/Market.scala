@@ -18,7 +18,12 @@ case class Market() extends Actor {
   )
 
   def whichOne: ActorRef = {
-    cashiers.toList.sortBy(_._2).head._1
+    logger.info("Looking for good cashier inside : " + cashiers)
+    val sorted: List[(ActorRef, Int)] = cashiers.toList.sortBy(_._2)
+    logger.info("When sorted : " + sorted)
+    val choice = sorted.head._1
+    logger.info("The less busy one is : " + choice)
+    choice
   }
 
   override def receive: Receive = {
@@ -32,5 +37,12 @@ case class Market() extends Actor {
       cashiers -= sender
       logger.info(s"ok, $sender, you have $n customers")
       cashiers += sender -> n
+    case (AreYouAllDone) =>
+      logger.info("Getting asked if I am done. Sending global request.")
+      cashiers.foreach(_._1 ! HowManyCustomers)
+      val done: Boolean = cashiers.forall(_._2 == 0)
+      if(done) logger.info("Yes I am")
+      else logger.info("No I am not : " + cashiers)
+      sender ! AmIDone(done)
   }
 }

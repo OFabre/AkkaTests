@@ -24,7 +24,7 @@ class Cashier extends Actor {
   override def receive: Receive = {
     case (Hello) =>
       nbCustomer += 1
-      val waitTime: Long = Random.nextInt(5000)
+      val waitTime: Long = 4000 + Random.nextInt(1000)
       logger.info(s"I am busy with a client (for $waitTime ms) and now have $nbCustomer customers")
       waiter ! TimingOut(sender, waitTime)
     case(Done(sender)) =>
