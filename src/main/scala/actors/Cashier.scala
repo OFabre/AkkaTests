@@ -1,15 +1,9 @@
 package actors
 
-import java.time.Duration
-
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.event.Logging
-import akka.pattern.Patterns
-import akka.util.Timeout
-import com.sun.deploy.util.Waiter
 import messages._
 
-import scala.concurrent.duration._
 import scala.util.Random
 
 /**
@@ -17,17 +11,17 @@ import scala.util.Random
   */
 class Cashier extends Actor {
   val logger = Logging.getLogger(ActorSystem("helloakka"), "Cashier")
-  var nbCustomer = 0
   val system = ActorSystem("helloakka")
   val waiter: ActorRef = system.actorOf(Props[Waiter], "waiter")
+  var nbCustomer = 0
 
   override def receive: Receive = {
     case (Hello) =>
       nbCustomer += 1
-      val waitTime: Long = 4000 + Random.nextInt(1000)
+      val waitTime: Long = 1000 + Random.nextInt(1000) // TODO : Use global conf to set waiting time
       logger.info(s"I am busy with a client (for $waitTime ms) and now have $nbCustomer customers")
       waiter ! TimingOut(sender, waitTime)
-    case(Done(sender)) =>
+    case (Done(sender)) =>
       sender ! GoodBye
       nbCustomer -= 1
       logger.info(s"Done with $sender, I now have $nbCustomer customers")

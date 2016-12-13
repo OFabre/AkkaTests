@@ -2,7 +2,6 @@ package actors
 
 import akka.actor.{Actor, ActorRef, ActorSystem}
 import akka.event.Logging
-import com.sun.org.apache.bcel.internal.generic.GOTO
 import messages.{GoToThisCashier, GoodBye, Hello}
 
 /**
@@ -15,6 +14,6 @@ class Customer(market: ActorRef) extends Actor {
 
   override def receive: Receive = {
     case (GoToThisCashier(cashierRef)) => cashierRef ! Hello
-    //case (GoodBye) => logger.info(s"I am done, thanks $sender")
+    case (GoodBye) => logger.info(s"I am done, thanks $sender")
   }
 }

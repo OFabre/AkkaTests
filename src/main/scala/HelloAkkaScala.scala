@@ -1,17 +1,13 @@
-import java.util.concurrent.TimeUnit
-
 import actors.{Customer, Market}
 import akka.actor.{Actor, ActorRef, ActorSystem, Props}
 import akka.event.Logging
+import akka.pattern.ask
 import akka.util.Timeout
 import messages.{AmIDone, AreYouAllDone}
-import akka.pattern.ask
 
-import scala.collection.immutable.IndexedSeq
-import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
-import scala.util.{Failure, Success}
-import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future}
+import scala.language.postfixOps
 
 case class DoneChecker(market: ActorRef) extends Actor {
   val logger = Logging.getLogger(ActorSystem("helloakka"), "DoneChecker")
@@ -39,13 +35,14 @@ object HelloAkkaScala extends App {
 
   val market = system.actorOf(Props[Market], "market")
 
+  // TODO : record total time of execution
+
   (1 to args(0).toInt).foreach({ i =>
     system.actorOf(Props(new Customer(market))) // Adds a customer to the market
     Thread.sleep(100)
   })
-
-  var done = false
   implicit val timeout = Timeout(5 seconds)
+  var done = false
 
   while (!done) {
     logger.info("Waiting in vain...")

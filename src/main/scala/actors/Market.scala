@@ -15,23 +15,14 @@ case class Market() extends Actor {
     ActorSystem("helloakka").actorOf(Props[Cashier]) -> 0,
     ActorSystem("helloakka").actorOf(Props[Cashier]) -> 0,
     ActorSystem("helloakka").actorOf(Props[Cashier]) -> 0
-  )
-
-  def whichOne: ActorRef = {
-    logger.info("Looking for good cashier inside : " + cashiers)
-    val sorted: List[(ActorRef, Int)] = cashiers.toList.sortBy(_._2)
-    logger.info("When sorted : " + sorted)
-    val choice = sorted.head._1
-    logger.info("The less busy one is : " + choice)
-    choice
-  }
+  ) // TODO : automation of cashiers creation. Parameter with number of cashiers ?
 
   override def receive: Receive = {
     case (Hello) =>
       logger.info(s"Hello $sender")
       val choice = whichOne
       sender ! GoToThisCashier(choice)
-      logger.info(s"$sender, go there : $choice")
+      logger.info(s"$sender, go there : $choice") // TODO : Explicit debug. Usable with external tool ?
       choice ! HowManyCustomers
     case (ThisManyCustomers(n)) =>
       cashiers -= sender
@@ -44,5 +35,14 @@ case class Market() extends Actor {
       if(done) logger.info("Yes I am")
       else logger.info("No I am not : " + cashiers)
       sender ! AmIDone(done)
+  }
+
+  def whichOne: ActorRef = {
+    logger.info("Looking for good cashier inside : " + cashiers)
+    val sorted: List[(ActorRef, Int)] = cashiers.toList.sortBy(_._2)
+    logger.info("When sorted : " + sorted)
+    val choice = sorted.head._1
+    logger.info("The less busy one is : " + choice)
+    choice
   }
 }
