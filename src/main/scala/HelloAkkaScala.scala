@@ -4,6 +4,7 @@ import akka.event.Logging
 import akka.pattern.ask
 import akka.util.Timeout
 import messages.{AmIDone, AreYouAllDone}
+import com.typesafe.config.ConfigFactory
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
@@ -37,7 +38,8 @@ object HelloAkkaScala extends App {
 
   // TODO : record total time of execution
 
-  val nbCustomers = 100
+  private val conf = ConfigFactory.load()
+  val nbCustomers = conf.getInt("customers.nb")
 
   (1 to nbCustomers).foreach({ i =>
     system.actorOf(Props(new Customer(market))) // Adds a customer to the market
