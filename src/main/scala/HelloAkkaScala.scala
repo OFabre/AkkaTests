@@ -37,7 +37,9 @@ object HelloAkkaScala extends App {
 
   // TODO : record total time of execution
 
-  (1 to args(0).toInt).foreach({ i =>
+  val nbCustomers = 100
+
+  (1 to nbCustomers).foreach({ i =>
     system.actorOf(Props(new Customer(market))) // Adds a customer to the market
     Thread.sleep(100)
   })
